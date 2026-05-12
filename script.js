@@ -6,8 +6,8 @@
  * Objetivo: Aplicar conceptos del DOM para seleccionar elementos,
  * responder a eventos y crear nuevos elementos dinámicamente.
  * 
- * Autor: [Tu nombre aquí]
- * Fecha: [Fecha actual]
+ * cooperador: [Sara Rojas]
+ * Fecha: [12-05-26]
  * ============================================
  */
 
@@ -161,17 +161,20 @@ function updateMessageCount() {
 /**
  * Oculta el estado vacío (mensaje cuando no hay mensajes)
  */
+const taskInputs = document.querySelectorAll('#task-form input, #task-form button, #task-form textarea');
+
 function hideEmptyState() {
-    // TODO: Implementar función para ocultar el estado vacío
-    // Pista: Agrega la clase 'hidden' al elemento emptyState
+    // Habilitamos los controles para que el usuario pueda escribir
+    taskInputs.forEach(element => {
+        element.disabled = false;
+    });
 }
 
-/**
- * Muestra el estado vacío (mensaje cuando no hay mensajes)
- */
 function showEmptyState() {
-    // TODO: Implementar función para mostrar el estado vacío
-    // Pista: Remueve la clase 'hidden' del elemento emptyState
+    // Deshabilitamos los controles para representar el estado vacío/bloqueado
+    taskInputs.forEach(element => {
+        element.disabled = true;
+    });
 }
 
 
