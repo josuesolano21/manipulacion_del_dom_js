@@ -20,31 +20,57 @@
  * Usamos getElementById para obtener referencias a los elementos únicos.
  */
 
-// Formulario
-const messageForm = document.getElementById('messageForm');
+// ============================================
+// 1. SELECCIÓN DE ELEMENTOS DEL DOM
+// ============================================
 
-// Campos de entrada
-const userNameInput = document.getElementById('userName');
-const userMessageInput = document.getElementById('userMessage');
+// Formulario de búsqueda de usuario
+const searchForm = document.getElementById('searchForm');
 
-// Botón de envío
-const submitBtn = document.getElementById('submitBtn');
+// Input del documento del usuario
+const userIdInput = document.getElementById('userIdInput');
 
-// Elementos para mostrar errores
-const userNameError = document.getElementById('userNameError');
-const userMessageError = document.getElementById('userMessageError');
+// Error del input de búsqueda
+const userIdError = document.getElementById('userIdError');
 
-// Contenedor donde se mostrarán los mensajes
-const messagesContainer = document.getElementById('messagesContainer');
+// Contenedor donde se muestran los datos del usuario
+const userContainer = document.getElementById('userContainer');
 
-// Estado vacío (mensaje que se muestra cuando no hay mensajes)
-const emptyState = document.getElementById('emptyState');
+// Estado vacío del contenedor de usuario
+const userEmptyState = document.getElementById('userEmptyState');
 
-// Contador de mensajes
-const messageCount = document.getElementById('messageCount');
+// Mensaje de usuario no encontrado
+const userNotFound = document.getElementById('userNotFound');
 
-// Variable para llevar el conteo de mensajes
-let totalMessages = 0;
+// Formulario de registro de tareas
+const taskForm = document.getElementById('taskForm');
+
+// Campos de la tarea
+const taskTitle = document.getElementById('taskTitle');
+const taskDescription = document.getElementById('taskDescription');
+const taskStatus = document.getElementById('taskStatus');
+
+// Botón de registro de tarea
+const taskBtn = document.getElementById('taskBtn');
+
+// Errores de los campos de la tarea
+const taskTitleError = document.getElementById('taskTitleError');
+const taskDescriptionError = document.getElementById('taskDescriptionError');
+const taskStatusError = document.getElementById('taskStatusError');
+
+// Tbody de la tabla de tareas
+const taskTableBody = document.getElementById('taskTableBody');
+
+// Contador de tareas
+const taskCount = document.getElementById('taskCount');
+
+// Estado vacío de la tabla de tareas
+const taskEmptyState = document.getElementById('taskEmptyState');
+
+// Variable para guardar el usuario activo
+let activeUserId = null;
+let totalTasks = 0;
+
 
 
 // ============================================
