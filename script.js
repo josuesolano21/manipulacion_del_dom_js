@@ -416,26 +416,6 @@ async function enviarTarea(titulo, descripcion, estadoVal, fecha) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ============================================
 // 6. REFLEXIÓN Y DOCUMENTACIÓN
 // ============================================
@@ -464,6 +444,81 @@ async function enviarTarea(titulo, descripcion, estadoVal, fecha) {
 // 7. INICIALIZACIÓN (OPCIONAL)
 // ============================================
 
+// Agregar tarea a la tabla del DOM
+
+//
+// ============================================
+// CREAR ELEMENTO DE TAREA (como createMessageElement)
+// ============================================
+
+/**
+ * Crea una fila <tr> con los datos de la tarea
+ * Sigue la misma estructura de createMessageElement()
+ * @param {Object} tarea - Objeto con los datos de la tarea
+ * @returns {HTMLTableRowElement} - Fila lista para insertar en la tabla
+ */
+function createTaskElement(tarea) {
+
+    // PASO 1: Crear el elemento fila
+    const fila = document.createElement('tr');
+    fila.classList.add('fila-nueva');
+
+    // PASO 2: Crear cada celda con su contenido
+    const tdNumero = document.createElement('td');
+    tdNumero.textContent = tarea.id;
+
+    const tdTitulo = document.createElement('td');
+    tdTitulo.textContent = tarea.titulo;
+    tdTitulo.classList.add('td-titulo');
+
+    const tdDescripcion = document.createElement('td');
+    tdDescripcion.textContent = tarea.descripcion;
+    tdDescripcion.classList.add('td-desc');
+
+    const tdEstado = document.createElement('td');
+    tdEstado.innerHTML = badgeEstado(tarea.estado); // ← badge de color
+
+    const tdFecha = document.createElement('td');
+    tdFecha.textContent = formatearFecha(tarea.fecha);
+
+    // PASO 3: Agregar cada celda a la fila
+    fila.appendChild(tdNumero);
+    fila.appendChild(tdTitulo);
+    fila.appendChild(tdDescripcion);
+    fila.appendChild(tdEstado);
+    fila.appendChild(tdFecha);
+
+    // PASO 4: Retornar la fila lista
+    return fila;
+}
+
+
+// AGREGAR FILA A LA TABLA (como appendMessage)
+
+
+/**
+ * Recibe la tarea guardada y la agrega a la tabla del DOM
+ * Se llama después de cada POST exitoso
+ * @param {Object} tarea - Objeto retornado por el servidor
+ */
+function agregarFilaTabla(tarea) {
+
+    // PASO 1: Crear el elemento con createTaskElement
+    const fila = createTaskElement(tarea);
+
+    // PASO 2: Mostrar la tabla si estaba oculta
+    setVisible(tablaVacia, false);
+    setVisible(tablaWrapper, true);
+    setVisible(tareaCount, true);
+
+    // PASO 3: Insertar la fila al final de la tabla
+    // appendChild garantiza que cada tarea queda debajo de la anterior
+    tablaBody.appendChild(fila);
+
+    // PASO 4: Actualizar el contador de tareas
+    estado.contadorTareas++;
+    actualizarContador();
+}
 /**
  * Esta función se ejecuta cuando el DOM está completamente cargado
  */
