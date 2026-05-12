@@ -164,6 +164,11 @@ function setTaskFormEnabled(enabled) {
 
 setTaskFormEnabled(false);
 
+
+// ============================================
+// 5. Validación formulario de tareas
+// ============================================
+
 function validateTaskForm() {
     let isValid = true;
 
