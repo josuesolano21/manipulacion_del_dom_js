@@ -383,6 +383,57 @@ tareaDesc.addEventListener('input',      handleInputChange);
 tareaEstado.addEventListener('change',   handleInputChange);
 tareaFecha.addEventListener('change',    handleInputChange);
 btnLimpiar.addEventListener('click',     handleLimpiarClick);
+// 
+// PASO : Enviar la tarea al servidor con fetch POST
+// 
+
+async function enviarTarea(titulo, descripcion, estadoVal, fecha) {
+
+    // Construir el objeto tarea asociado al usuario encontrado
+    const nuevaTarea = {
+        usuarioId:   estado.usuarioActual.id,  // ← asociada al usuario
+        titulo,
+        descripcion,
+        estado:      estadoVal,
+        fecha,
+    };
+
+    // Fetch POST → sin recargar la página
+    const resp = await fetch('https://jsonplaceholder.typicode.com/todos', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' }, // ← header requerido
+        body:    JSON.stringify(nuevaTarea),              // ← convertir a JSON
+    });
+
+    // jsonplaceholder retorna el objeto creado con un id simulado
+    const tareaGuardada = await resp.json();
+
+    console.log('Tarea guardada:', tareaGuardada);
+    // { id: 201, usuarioId: 1, titulo: '...', descripcion: '...', ... }
+
+    return tareaGuardada;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // ============================================
