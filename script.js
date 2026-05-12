@@ -221,39 +221,144 @@ function createMessageElement(userName, message) {
 // ============================================
 
 /**
- * Maneja el evento de envío del formulario
+ * Maneja el evento de envío del formulario de BÚSQUEDA
  * @param {Event} event - Evento del formulario
  */
-function handleFormSubmit(event) {
-    // TODO: Implementar el manejador del evento submit
-    
-    // PASO 1: Prevenir el comportamiento por defecto del formulario
-    // Pista: event.preventDefault()
-    
-    // PASO 2: Validar el formulario
-    // Si no es válido, detener la ejecución (return)
-    
-    // PASO 3: Obtener los valores de los campos
-    
-    // PASO 4: Crear el nuevo elemento de mensaje
-    // Llamar a createMessageElement con los valores obtenidos
-    
-    // PASO 5: Limpiar el formulario
-    // Pista: messageForm.reset()
-    
-    // PASO 6: Limpiar los errores
-    
-    // PASO 7: Opcional - Enfocar el primer campo para facilitar agregar otro mensaje
-    // Pista: userNameInput.focus()
+async function handleFormSubmit(event) {
+
+    // PASO 1: Prevenir recarga de página
+    event.preventDefault();
+
+    // PASO 2: Obtener el valor del campo
+    const doc = inputDocumento.value.trim();
+
+    // PASO 3: Validar el formulario
+    if (!doc) {
+        setError(errorDocumento, 'Ingresa el número de documento.');
+        return; // detiene la ejecución si no es válido
+    }
+    if (!/^\d{6,15}$/.test(doc)) {
+        setError(errorDocumento, 'El documento debe tener entre 6 y 15 dígitos.');
+        return;
+    }
+    setError(errorDocumento, ''); // limpia error si pasó la validación
+
+    // PASO 4: Consultar el servidor y mostrar resultado
+    try {
+        const resp     = await fetch(`${API_BASE}/usuarios?documento=${doc}`);
+        const usuarios = await resp.json();
+
+        if (usuarios.length === 0) {
+            // Usuario NO encontrado → mostrar mensaje
+            setVisible(mensajeNoEncontrado, true);
+            setVisible(resultadoUsuario, false);
+            bloquearFormularioTarea();
+        } else {
+            // Usuario encontrado → mostrar sus datos
+            const usuario = usuarios[0];
+            estado.usuarioActual = usuario;
+            mostrarDatosUsuario(usuario);
+            habilitarFormularioTarea();
+            cargarTareasExistentes(usuario.id);
+        }
+
+    } catch (err) {
+        setError(errorDocumento, '⚠ No se pudo conectar con el servidor.');
+    }
+
+    // PASO 5: Limpiar el formulario de búsqueda
+    formBuscar.reset();
+
+    // PASO 6: Enfocar el campo para facilitar otra búsqueda
+    inputDocumento.focus();
 }
 
 /**
- * Limpia los errores cuando el usuario empieza a escribir
+ * Maneja el evento de envío del formulario de TAREAS
+ * @param {Event} event - Evento del formulario
  */
-function handleInputChange() {
-    // TODO: Implementar limpieza de errores al escribir
-    // Esta función se ejecuta cuando el usuario escribe en un campo
-    // Debe limpiar el error de ese campo específico
+async function handleTareaSubmit(event) {
+
+    // PASO 1: Prevenir recarga de página
+    event.preventDefault();
+
+    // PASO 2: Obtener los valores de los campos
+    const titulo      = tareaTitulo.value.trim();
+    const descripcion = tareaDesc.value.trim();
+    const estadoVal   = tareaEstado.value;
+    const fecha       = tareaFecha.value;
+
+    // PASO 3: Validar que todos los campos estén completos
+    limpiarErroresTarea();
+    let hayError = false;
+
+    if (!titulo || titulo.length < 5) {
+        setError(errorTitulo, 'El título debe tener al menos 5 caracteres.');
+        hayError = true;
+    }
+    if (!descripcion || descripcion.length < 10) {
+        setError(errorDesc, 'La descripción debe tener al menos 10 caracteres.');
+        hayError = true;
+    }
+    if (!estadoVal) {
+        setError(errorEstado, 'Selecciona un estado.');
+        hayError = true;
+    }
+    if (!fecha) {
+        setError(errorFecha, 'La fecha límite es requerida.');
+        hayError = true;
+    }
+
+    if (hayError) return; // detiene si hay errores
+
+    // PASO 4: Crear el objeto tarea y enviarlo al servidor
+    const nuevaTarea = {
+        usuarioId:   estado.usuarioActual.id,
+        titulo,
+        descripcion,
+        estado:      estadoVal,
+        fecha,
+    };
+
+    try {
+        const resp = await fetch(`${API_BASE}/tareas`, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify(nuevaTarea),
+        });
+        const tareaGuardada = await resp.json();
+
+        // PASO 5: Agregar la tarea a la tabla del DOM
+        agregarFilaTabla(tareaGuardada);
+
+        // PASO 6: Limpiar el formulario
+        limpiarCamposTarea();
+        limpiarErroresTarea();
+
+        // PASO 7: Enfocar el primer campo para agregar otra tarea fácilmente
+        tareaTitulo.focus();
+
+        mostrarToast('✓ Tarea registrada exitosamente');
+
+    } catch (err) {
+        setError(errorTitulo, '⚠ Error al guardar. Verifica la conexión.');
+    }
+}
+
+/**
+ * Limpia el error del campo específico cuando el usuario empieza a escribir
+ * @param {Event} e - Evento input/change del campo
+ */
+function handleInputChange(e) {
+
+    // Identifica qué campo disparó el evento con e.target.id
+    const id = e.target.id;
+
+    if (id === 'input-documento')   setError(errorDocumento, '');
+    if (id === 'tarea-titulo')      setError(errorTitulo, '');
+    if (id === 'tarea-descripcion') setError(errorDesc, '');
+    if (id === 'tarea-estado')      setError(errorEstado, '');
+    if (id === 'tarea-fecha')       setError(errorFecha, '');
 }
 
 
@@ -265,12 +370,19 @@ function handleInputChange() {
  * Aquí registramos todos los event listeners
  */
 
-// TODO: Registrar el evento 'submit' en el formulario
-// Pista: messageForm.addEventListener('submit', handleFormSubmit);
+// Evento submit del formulario de BÚSQUEDA de usuario
+formBuscar.addEventListener('submit', handleBuscarSubmit);
 
-// TODO: Registrar eventos 'input' en los campos para limpiar errores al escribir
-// Pista: userNameInput.addEventListener('input', handleInputChange);
-// Pista: userMessageInput.addEventListener('input', handleInputChange);
+// Evento submit del formulario de REGISTRO de tarea
+formTarea.addEventListener('submit', handleTareaSubmit);
+
+// Eventos input para limpiar errores al escribir en cada campo
+inputDocumento.addEventListener('input', handleInputChange);
+tareaTitulo.addEventListener('input',    handleInputChange);
+tareaDesc.addEventListener('input',      handleInputChange);
+tareaEstado.addEventListener('change',   handleInputChange);
+tareaFecha.addEventListener('change',    handleInputChange);
+btnLimpiar.addEventListener('click',     handleLimpiarClick);
 
 
 // ============================================
