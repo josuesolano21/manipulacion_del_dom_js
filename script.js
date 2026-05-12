@@ -92,7 +92,9 @@ function showUserData(user) {
             <span class="message-card__timestamp">ID: ${user.id}</span>
         </div>
         <div class="message-card__content">
-            <p>👤 ${user.nombre}</p>
+            <p>👤 Nombre: ${user.nombre}</p>
+            <p>📧 Email: ${user.email}</p>
+            <p>🏙️ Ciudad: ${user.ciudad}</p>
         </div>
     `;
 
