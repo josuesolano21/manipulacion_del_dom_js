@@ -162,23 +162,58 @@ function setTaskFormEnabled(enabled) {
     taskInputs.forEach(el => el.disabled = !enabled);
 }
 
-setTaskFormEnabled(false); // estado inicial
+setTaskFormEnabled(false);
+
 
 // ============================================
-// 5. REGISTRO DE EVENTOS
+// 5. Validación formulario de tareas
 // ============================================
 
-/**
- * Aquí registramos todos los event listeners
- */
+function validateTaskForm() {
+    let isValid = true;
 
-// TODO: Registrar el evento 'submit' en el formulario
-// Pista: messageForm.addEventListener('submit', handleFormSubmit);
+    const title = document.getElementById('taskTitle').value.trim();
+    const description = document.getElementById('taskDescription').value.trim();
+    const status = document.getElementById('taskStatus').value;
 
-// TODO: Registrar eventos 'input' en los campos para limpiar errores al escribir
-// Pista: userNameInput.addEventListener('input', handleInputChange);
-// Pista: userMessageInput.addEventListener('input', handleInputChange);
+    document.getElementById('taskTitleError').textContent = '';
+    document.getElementById('taskDescriptionError').textContent = '';
+    document.getElementById('taskStatusError').textContent = '';
 
+    if (title === '') {
+        document.getElementById('taskTitleError').textContent = 'El título es obligatorio';
+        isValid = false;
+    }
+
+    if (description === '') {
+        document.getElementById('taskDescriptionError').textContent = 'La descripción es obligatoria';
+        isValid = false;
+    }
+
+    if (status === '') {
+        document.getElementById('taskStatusError').textContent = 'El estado es obligatorio';
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+document.getElementById('taskForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    if (!validateTaskForm()) return;
+});
+
+document.getElementById('taskTitle').addEventListener('input', () => {
+    document.getElementById('taskTitleError').textContent = '';
+});
+
+document.getElementById('taskDescription').addEventListener('input', () => {
+    document.getElementById('taskDescriptionError').textContent = '';
+});
+
+document.getElementById('taskStatus').addEventListener('change', () => {
+    document.getElementById('taskStatusError').textContent = '';
+});
 
 // ============================================
 // 6. REFLEXIÓN Y DOCUMENTACIÓN
