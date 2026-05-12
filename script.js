@@ -198,10 +198,6 @@ function validateTaskForm() {
     return isValid;
 }
 
-// ============================================
-// 5. REGISTRO DE EVENTOS
-// ============================================
-
 document.getElementById('taskForm').addEventListener('submit', function(event) {
     event.preventDefault();
     if (!validateTaskForm()) return;
