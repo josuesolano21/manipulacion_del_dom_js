@@ -3,82 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD:todo/index.html
     <title>Grupo 7</title>
+=======
+    <title>Gestión de Tareas - Ejercicio DOM</title>
+>>>>>>> 448e88c9e1cf929f42a7779680eb36210dcf5fb6:index.html
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
+
         <!-- Encabezado principal -->
         <header class="header">
-            <h1 class="header__title">Registro de Mensajes</h1>
-            <p class="header__subtitle">Practica la manipulación del DOM en tiempo real</p>
+            <h1 class="header__title">Gestión de Tareas</h1>
+            <p class="header__subtitle">Consulta usuarios y registra tareas en tiempo real</p>
         </header>
 
-        <!-- Formulario de entrada -->
+        <!-- Formulario de búsqueda de usuario -->
         <section class="form-section">
             <div class="card">
-                <h2 class="card__title">Nuevo Mensaje</h2>
-                
-                <form id="messageForm" class="form" novalidate>
+                <h2 class="card__title">Buscar Usuario</h2>
+
+                <form id="searchForm" class="form" novalidate>
                     <div class="form__group">
-                        <label for="userName" class="form__label">
-                            Nombre de usuario
+                        <label for="userIdInput" class="form__label">
+                            Documento del usuario
                         </label>
-                        <input 
-                            type="text" 
-                            id="userName" 
-                            class="form__input" 
-                            placeholder="Ingresa tu nombre"
+                        <input
+                            type="text"
+                            id="userIdInput"
+                            class="form__input"
+                            placeholder="Ingresa el documento (1 - 10)"
                             aria-required="true"
                         >
-                        <span class="form__error" id="userNameError"></span>
+                        <span class="form__error" id="userIdError"></span>
                     </div>
 
-                    <div class="form__group">
-                        <label for="userMessage" class="form__label">
-                            Tu mensaje
-                        </label>
-                        <textarea 
-                            id="userMessage" 
-                            class="form__input form__textarea" 
-                            placeholder="Escribe tu mensaje aquí..."
-                            rows="4"
-                            aria-required="true"
-                        ></textarea>
-                        <span class="form__error" id="userMessageError"></span>
-                    </div>
-
-                    <button type="submit" class="btn btn--primary" id="submitBtn">
-                        <span class="btn__text">Agregar Mensaje</span>
+                    <button type="submit" class="btn btn--primary" id="searchBtn">
+                        <span class="btn__text">Buscar Usuario</span>
                         <span class="btn__icon">➤</span>
                     </button>
                 </form>
             </div>
         </section>
 
-        <!-- Área de mensajes -->
+        <!-- Datos del usuario encontrado -->
+        <section class="form-section">
+            <div class="card">
+                <h2 class="card__title">Datos del Usuario</h2>
+
+                <div id="userContainer" class="messages-container">
+                    <div class="messages-empty" id="userEmptyState">
+                        <svg class="messages-empty__icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <p class="messages-empty__text">Ningún usuario consultado</p>
+                        <p class="messages-empty__subtext">Ingresa el documento para buscar un usuario</p>
+                    </div>
+                </div>
+
+                <span id="userNotFound" class="form__error" style="display:none;">
+                    ⚠️ Usuario no encontrado en el sistema
+                </span>
+            </div>
+        </section>
+
+        <!-- Formulario de registro de tareas -->
+        <section class="form-section">
+            <div class="card">
+                <h2 class="card__title">Registrar Tarea</h2>
+
+                <form id="taskForm" class="form" novalidate disabled>
+                    <div class="form__group">
+                        <label for="taskTitle" class="form__label">
+                            Título de la tarea
+                        </label>
+                        <input
+                            type="text"
+                            id="taskTitle"
+                            class="form__input"
+                            placeholder="Ingresa el título"
+                            aria-required="true"
+                            disabled
+                        >
+                        <span class="form__error" id="taskTitleError"></span>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="taskDescription" class="form__label">
+                            Descripción
+                        </label>
+                        <textarea
+                            id="taskDescription"
+                            class="form__input form__textarea"
+                            placeholder="Describe la tarea..."
+                            rows="4"
+                            aria-required="true"
+                            disabled
+                        ></textarea>
+                        <span class="form__error" id="taskDescriptionError"></span>
+                    </div>
+
+                    <div class="form__group">
+                        <label for="taskStatus" class="form__label">
+                            Estado
+                        </label>
+                        <select
+                            id="taskStatus"
+                            class="form__input"
+                            aria-required="true"
+                            disabled
+                        >
+                            <option value="">Selecciona un estado</option>
+                            <option value="false">Pendiente</option>
+                            <option value="true">Completada</option>
+                        </select>
+                        <span class="form__error" id="taskStatusError"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary" id="taskBtn" disabled>
+                        <span class="btn__text">Registrar Tarea</span>
+                        <span class="btn__icon">➤</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Tabla de tareas registradas -->
         <section class="messages-section">
             <div class="messages-header">
-                <h2 class="messages-header__title">Mensajes Publicados</h2>
-                <span class="messages-header__count" id="messageCount">0 mensajes</span>
+                <h2 class="messages-header__title">Tareas Registradas</h2>
+                <span class="messages-header__count" id="taskCount">0 tareas</span>
             </div>
-            
-            <div id="messagesContainer" class="messages-container">
-                <!-- Los mensajes se agregarán aquí dinámicamente -->
-                <div class="messages-empty" id="emptyState">
+
+            <div class="card">
+                <table class="task-table" id="taskTable">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Título</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskTableBody">
+                        <!-- Las tareas se agregan aquí dinámicamente -->
+                    </tbody>
+                </table>
+
+                <div class="messages-empty" id="taskEmptyState">
                     <svg class="messages-empty__icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
                     </svg>
-                    <p class="messages-empty__text">Aún no hay mensajes</p>
-                    <p class="messages-empty__subtext">Completa el formulario para agregar tu primer mensaje</p>
+                    <p class="messages-empty__text">Aún no hay tareas registradas</p>
+                    <p class="messages-empty__subtext">Busca un usuario y registra su primera tarea</p>
                 </div>
             </div>
         </section>
 
-        <!-- Footer informativo -->
+        <!-- Footer -->
         <footer class="footer">
             <p class="footer__text">Ejercicio de manipulación del DOM | SENA - Desarrollo Web</p>
         </footer>
+
     </div>
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 

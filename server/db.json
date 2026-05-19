@@ -1,0 +1,26 @@
+{
+  "busqueda_usuarios": [
+    { "id": "1", "nombre": "Leanne Graham",         "email": "sincere@april.biz",        "ciudad": "Gwenborough" },
+    { "id": "2", "nombre": "Ervin Howell",           "email": "shanna@melissa.tv",        "ciudad": "Wisokyburgh" },
+    { "id": "3", "nombre": "Clementine Bauch",       "email": "nathan@yesenia.net",       "ciudad": "McKenziehaven" },
+    { "id": "4", "nombre": "Patricia Lebsack",       "email": "julianne@kory.org",        "ciudad": "South Elvis" },
+    { "id": "5", "nombre": "Chelsey Dietrich",       "email": "lucio@annie.ca",           "ciudad": "Roscoeview" },
+    { "id": "6", "nombre": "Mrs. Dennis Schulist",   "email": "karley@jasper.info",       "ciudad": "South Christy" },
+    { "id": "7", "nombre": "Kurtis Weissnat",        "email": "telly@melissa.tv",         "ciudad": "Howemouth" },
+    { "id": "8", "nombre": "Nicholas Runolfsdottir", "email": "sherwood@rosamond.me",     "ciudad": "Aliyaview" },
+    { "id": "9", "nombre": "Glenna Reichert",        "email": "chaim@marjolaine.name",    "ciudad": "Bartholomebury" },
+    { "id": "10", "nombre": "Clementina DuBuque",    "email": "rey@karina.tv",            "ciudad": "Lebsackbury" }
+  ],
+  "registro_tareas": [
+    { "userId": "1",  "title": "Diseñar base de datos",    "description": "Crear el modelo entidad relación del proyecto",              "completed": false },
+    { "userId": "2",  "title": "Revisar documentación",    "description": "Leer y validar los requisitos del cliente",                  "completed": false },
+    { "userId": "3",  "title": "Configurar entorno",       "description": "Instalar dependencias y configurar variables de entorno",    "completed": true  },
+    { "userId": "4",  "title": "Crear endpoints",          "description": "Desarrollar los endpoints REST del módulo de usuarios",      "completed": false },
+    { "userId": "5",  "title": "Pruebas unitarias",        "description": "Escribir pruebas para las funciones principales",            "completed": false },
+    { "userId": "6",  "title": "Corregir bugs",            "description": "Resolver los errores reportados en el sprint anterior",      "completed": true  },
+    { "userId": "7",  "title": "Subir a producción",       "description": "Hacer deploy de la versión 1.2 en el servidor",             "completed": false },
+    { "userId": "8",  "title": "Actualizar dependencias",  "description": "Revisar y actualizar los paquetes desactualizados",         "completed": false },
+    { "userId": "9",  "title": "Reunión de retrospectiva", "description": "Preparar puntos de mejora para presentar al equipo",        "completed": true  },
+    { "userId": "10", "title": "Optimizar consultas",      "description": "Mejorar el rendimiento de las consultas a la base de datos", "completed": false }
+  ]
+}
