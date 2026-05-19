@@ -15,50 +15,24 @@
 // 1. SELECCIÓN DE ELEMENTOS DEL DOM
 // ============================================
 
-// Formulario de búsqueda de usuario
 const searchForm = document.getElementById('searchForm');
-
-// Input del documento del usuario
 const userIdInput = document.getElementById('userIdInput');
-
-// Error del input de búsqueda
 const userIdError = document.getElementById('userIdError');
-
-// Contenedor donde se muestran los datos del usuario
 const userContainer = document.getElementById('userContainer');
-
-// Estado vacío del contenedor de usuario
 const userEmptyState = document.getElementById('userEmptyState');
-
-// Mensaje de usuario no encontrado
 const userNotFound = document.getElementById('userNotFound');
-
-// Formulario de registro de tareas
 const taskForm = document.getElementById('taskForm');
-
-// Campos de la tarea
 const taskTitle = document.getElementById('taskTitle');
 const taskDescription = document.getElementById('taskDescription');
 const taskStatus = document.getElementById('taskStatus');
-
-// Botón de registro de tarea
 const taskBtn = document.getElementById('taskBtn');
-
-// Errores de los campos de la tarea
 const taskTitleError = document.getElementById('taskTitleError');
 const taskDescriptionError = document.getElementById('taskDescriptionError');
 const taskStatusError = document.getElementById('taskStatusError');
-
-// Tbody de la tabla de tareas
 const taskTableBody = document.getElementById('taskTableBody');
-
-// Contador de tareas
 const taskCount = document.getElementById('taskCount');
-
-// Estado vacío de la tabla de tareas
 const taskEmptyState = document.getElementById('taskEmptyState');
 
-// Variable para guardar el usuario activo
 let activeUserId = null;
 let totalTasks = 0;
 
@@ -113,6 +87,12 @@ function handleSearchSubmit(event) {
 
     clearUserData();
 
+    // 👇 LÍNEAS NUEVAS - limpia tabla al cambiar de usuario
+    taskTableBody.innerHTML = '';
+    totalTasks = 0;
+    taskCount.textContent = '0 tareas';
+    taskEmptyState.style.display = 'block';
+
     fetch('./server/db.json')
         .then(response => response.json())
         .then(data => {
@@ -130,10 +110,10 @@ function handleSearchSubmit(event) {
             setTaskFormEnabled(true);
         })
         .catch(error => {
-            console.error('Error al cargar db.json:', error);
-            userNotFound.style.display = 'block';
-            setTaskFormEnabled(false);
-        });
+        console.error('Error al cargar db.json:', error);
+        userNotFound.style.display = 'block';
+        setTaskFormEnabled(false);
+});
 }
 
 searchForm.addEventListener('submit', handleSearchSubmit);
@@ -145,9 +125,8 @@ userIdInput.addEventListener('input', function() {
 
 
 // ============================================
-// 4. HABILITAR FORMULARIO DE TAREAS
+// 4. Habilitar formulario de tareas
 // ============================================
-
 function setTaskFormEnabled(enabled) {
     const taskInputs = document.querySelectorAll('#taskForm input, #taskForm button, #taskForm select, #taskForm textarea');
     taskInputs.forEach(el => el.disabled = !enabled);
@@ -157,32 +136,32 @@ setTaskFormEnabled(false);
 
 
 // ============================================
-// 5. VALIDACIÓN Y REGISTRO DE TAREAS
+// 5. Validación formulario de tareas
 // ============================================
 
 function validateTaskForm() {
     let isValid = true;
 
-    const title = taskTitle.value.trim();
-    const description = taskDescription.value.trim();
-    const status = taskStatus.value;
+    const title = document.getElementById('taskTitle').value.trim();
+    const description = document.getElementById('taskDescription').value.trim();
+    const status = document.getElementById('taskStatus').value;
 
-    taskTitleError.textContent = '';
-    taskDescriptionError.textContent = '';
-    taskStatusError.textContent = '';
+    document.getElementById('taskTitleError').textContent = '';
+    document.getElementById('taskDescriptionError').textContent = '';
+    document.getElementById('taskStatusError').textContent = '';
 
     if (title === '') {
-        taskTitleError.textContent = 'El título es obligatorio';
+        document.getElementById('taskTitleError').textContent = 'El título es obligatorio';
         isValid = false;
     }
 
     if (description === '') {
-        taskDescriptionError.textContent = 'La descripción es obligatoria';
+        document.getElementById('taskDescriptionError').textContent = 'La descripción es obligatoria';
         isValid = false;
     }
 
     if (status === '') {
-        taskStatusError.textContent = 'El estado es obligatorio';
+        document.getElementById('taskStatusError').textContent = 'El estado es obligatorio';
         isValid = false;
     }
 
@@ -191,14 +170,9 @@ function validateTaskForm() {
 
 function addTaskToTable(title, description, status) {
     totalTasks++;
-
-    // Actualiza el contador
     taskCount.textContent = totalTasks;
-
-    // Oculta el estado vacío
     taskEmptyState.style.display = 'none';
 
-    // Crea la fila
     const row = document.createElement('tr');
     row.innerHTML = `
         <td>${totalTasks}</td>
@@ -210,13 +184,12 @@ function addTaskToTable(title, description, status) {
 
     taskTableBody.appendChild(row);
 
-    // Limpia el formulario después de registrar
     taskTitle.value = '';
     taskDescription.value = '';
     taskStatus.value = '';
 }
 
-taskForm.addEventListener('submit', function(event) {
+document.getElementById('taskForm').addEventListener('submit', function(event) {
     event.preventDefault();
     if (!validateTaskForm()) return;
 
@@ -227,18 +200,17 @@ taskForm.addEventListener('submit', function(event) {
     addTaskToTable(title, description, status);
 });
 
-taskTitle.addEventListener('input', () => {
-    taskTitleError.textContent = '';
+document.getElementById('taskTitle').addEventListener('input', () => {
+    document.getElementById('taskTitleError').textContent = '';
 });
 
-taskDescription.addEventListener('input', () => {
-    taskDescriptionError.textContent = '';
+document.getElementById('taskDescription').addEventListener('input', () => {
+    document.getElementById('taskDescriptionError').textContent = '';
 });
 
-taskStatus.addEventListener('change', () => {
-    taskStatusError.textContent = '';
+document.getElementById('taskStatus').addEventListener('change', () => {
+    document.getElementById('taskStatusError').textContent = '';
 });
-
 
 // ============================================
 // 6. REFLEXIÓN Y DOCUMENTACIÓN
@@ -265,12 +237,12 @@ taskStatus.addEventListener('change', () => {
 
 
 // ============================================
-// 7. INICIALIZACIÓN
+// 7. INICIALIZACIÓN (OPCIONAL)
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ DOM completamente cargado');
-    console.log('📝 Aplicación de registro de tareas iniciada');
+    console.log('📝 Aplicación de registro de mensajes iniciada');
 });
 
 
