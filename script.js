@@ -15,15 +15,6 @@
 // 1. SELECCIÓN DE ELEMENTOS DEL DOM
 // ============================================
 
-/**
- * Seleccionamos los elementos del DOM que necesitamos manipular.
- * Usamos getElementById para obtener referencias a los elementos únicos.
- */
-
-// ============================================
-// 1. SELECCIÓN DE ELEMENTOS DEL DOM
-// ============================================
-
 // Formulario de búsqueda de usuario
 const searchForm = document.getElementById('searchForm');
 
@@ -70,7 +61,6 @@ const taskEmptyState = document.getElementById('taskEmptyState');
 // Variable para guardar el usuario activo
 let activeUserId = null;
 let totalTasks = 0;
-
 
 
 // ============================================
@@ -130,7 +120,7 @@ function handleSearchSubmit(event) {
 
             if (!user) {
                 userNotFound.style.display = 'block';
-                setTaskFormEnabled(false); // 👈 no encontrado, bloquear
+                setTaskFormEnabled(false);
                 return;
             }
 
@@ -140,10 +130,10 @@ function handleSearchSubmit(event) {
             setTaskFormEnabled(true);
         })
         .catch(error => {
-        console.error('Error al cargar db.json:', error);
-        userNotFound.style.display = 'block';
-        setTaskFormEnabled(false); // error, bloquear
-});
+            console.error('Error al cargar db.json:', error);
+            userNotFound.style.display = 'block';
+            setTaskFormEnabled(false);
+        });
 }
 
 searchForm.addEventListener('submit', handleSearchSubmit);
@@ -155,8 +145,9 @@ userIdInput.addEventListener('input', function() {
 
 
 // ============================================
-// 4. Habilitar formulario de tareas
+// 4. HABILITAR FORMULARIO DE TAREAS
 // ============================================
+
 function setTaskFormEnabled(enabled) {
     const taskInputs = document.querySelectorAll('#taskForm input, #taskForm button, #taskForm select, #taskForm textarea');
     taskInputs.forEach(el => el.disabled = !enabled);
@@ -166,54 +157,88 @@ setTaskFormEnabled(false);
 
 
 // ============================================
-// 5. Validación formulario de tareas
+// 5. VALIDACIÓN Y REGISTRO DE TAREAS
 // ============================================
 
 function validateTaskForm() {
     let isValid = true;
 
-    const title = document.getElementById('taskTitle').value.trim();
-    const description = document.getElementById('taskDescription').value.trim();
-    const status = document.getElementById('taskStatus').value;
+    const title = taskTitle.value.trim();
+    const description = taskDescription.value.trim();
+    const status = taskStatus.value;
 
-    document.getElementById('taskTitleError').textContent = '';
-    document.getElementById('taskDescriptionError').textContent = '';
-    document.getElementById('taskStatusError').textContent = '';
+    taskTitleError.textContent = '';
+    taskDescriptionError.textContent = '';
+    taskStatusError.textContent = '';
 
     if (title === '') {
-        document.getElementById('taskTitleError').textContent = 'El título es obligatorio';
+        taskTitleError.textContent = 'El título es obligatorio';
         isValid = false;
     }
 
     if (description === '') {
-        document.getElementById('taskDescriptionError').textContent = 'La descripción es obligatoria';
+        taskDescriptionError.textContent = 'La descripción es obligatoria';
         isValid = false;
     }
 
     if (status === '') {
-        document.getElementById('taskStatusError').textContent = 'El estado es obligatorio';
+        taskStatusError.textContent = 'El estado es obligatorio';
         isValid = false;
     }
 
     return isValid;
 }
 
-document.getElementById('taskForm').addEventListener('submit', function(event) {
+function addTaskToTable(title, description, status) {
+    totalTasks++;
+
+    // Actualiza el contador
+    taskCount.textContent = totalTasks;
+
+    // Oculta el estado vacío
+    taskEmptyState.style.display = 'none';
+
+    // Crea la fila
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <td>${totalTasks}</td>
+        <td>${activeUserId}</td>
+        <td>${title}</td>
+        <td>${description}</td>
+        <td>${status}</td>
+    `;
+
+    taskTableBody.appendChild(row);
+
+    // Limpia el formulario después de registrar
+    taskTitle.value = '';
+    taskDescription.value = '';
+    taskStatus.value = '';
+}
+
+taskForm.addEventListener('submit', function(event) {
     event.preventDefault();
     if (!validateTaskForm()) return;
+
+    const title = taskTitle.value.trim();
+    const description = taskDescription.value.trim();
+    const status = taskStatus.value;
+
+    addTaskToTable(title, description, status);
 });
 
-document.getElementById('taskTitle').addEventListener('input', () => {
-    document.getElementById('taskTitleError').textContent = '';
+taskTitle.addEventListener('input', () => {
+    taskTitleError.textContent = '';
 });
 
-document.getElementById('taskDescription').addEventListener('input', () => {
-    document.getElementById('taskDescriptionError').textContent = '';
+taskDescription.addEventListener('input', () => {
+    taskDescriptionError.textContent = '';
 });
 
-document.getElementById('taskStatus').addEventListener('change', () => {
-    document.getElementById('taskStatusError').textContent = '';
+taskStatus.addEventListener('change', () => {
+    taskStatusError.textContent = '';
 });
+
 
 // ============================================
 // 6. REFLEXIÓN Y DOCUMENTACIÓN
@@ -240,18 +265,12 @@ document.getElementById('taskStatus').addEventListener('change', () => {
 
 
 // ============================================
-// 7. INICIALIZACIÓN (OPCIONAL)
+// 7. INICIALIZACIÓN
 // ============================================
 
-/**
- * Esta función se ejecuta cuando el DOM está completamente cargado
- */
 document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ DOM completamente cargado');
-    console.log('📝 Aplicación de registro de mensajes iniciada');
-    
-    // Aquí puedes agregar cualquier inicialización adicional
-    // Por ejemplo, cargar mensajes guardados del localStorage
+    console.log('📝 Aplicación de registro de tareas iniciada');
 });
 
 

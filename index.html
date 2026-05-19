@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Tareas - Ejercicio DOM</title>
+    <title>Grupo 7 - Ejercicio DOM</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -112,8 +112,9 @@
                             disabled
                         >
                             <option value="">Selecciona un estado</option>
-                            <option value="false">Pendiente</option>
-                            <option value="true">Completada</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="En progreso">En progreso</option>
+                            <option value="Completada">Completada</option>
                         </select>
                         <span class="form__error" id="taskStatusError"></span>
                     </div>
@@ -137,6 +138,7 @@
                 <table class="task-table" id="taskTable">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Usuario</th>
                             <th>Título</th>
                             <th>Descripción</th>
